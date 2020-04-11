@@ -1,5 +1,6 @@
 ## About
-Exporter is a [Burp Suite](https://portswigger.net/burp/) extension to copy a request to the clipboard as multiple programming languages functions.
+Exporter is a [Burp Suite](https://portswigger.net/burp/) extension to copy a request to the **clipboard** as multiple programming languages functions.
+
 You can export as:
  - cURL
  - Wget
@@ -10,6 +11,8 @@ You can export as:
  - NodeJS Request
  - jQuery AJAX
  - PowerShell
+ 
+ ![Screenshot_Exporter_01.jpg](Screenshot_Exporter_01.jpg)
 
 ## Requirements
 
@@ -20,12 +23,12 @@ In Burp Suite, under the `Extender/Extensions` tab, click on the `Add` button, s
 
 ## Usage
 You can copy the request from:
- - Proxy -> Intercept
- - Proxy -> HTTP history
- - Target -> Site map
+ - Proxy > Intercept
+ - Proxy > HTTP history
+ - Target > Site map
  - Repeater
 
-Right click -> Exporter to -> ...
+Right click > Exporter to > ...
 
 ## Possible improvements
  - More snippets
