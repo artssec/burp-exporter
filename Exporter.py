@@ -1,3 +1,26 @@
+"""
+      __  ___  __   __   ___  __  
+ /\  |__)  |  /__` /__` |__  /  ` 
+/~~\ |  \  |  .__/ .__/ |___ \__, 
+
+Security without imagination is a vulnerability.
+
+Author: ArtsSEC
+Site: https://artssec.com
+
+Title: Burp Suite exporter extension
+About: Exporter is a Burp Suite extension to copy a request to the clipboard as multiple programming languages functions.
+
+Version: 0.2
+
+Changelog:
+
+  0.2: Add python-readable exceptions. Thanks @securityMB
+
+  0.1: First public version
+  
+"""
+
 from burp import IBurpExtender, IContextMenuFactory
 from java.util import ArrayList
 from javax.swing import JMenuItem, JMenu
@@ -6,12 +29,30 @@ from java.awt.datatransfer import StringSelection
 from java.awt import Toolkit
 import json
 
-# So we can get python-readable exceptions
-# download https://raw.githubusercontent.com/securityMB/burp-exceptions/master/exceptions_fix.py
-try:
-    from exceptions_fix import FixBurpExceptions
-except ImportError:
-    pass
+# python-readable exceptions
+# Original code: https://raw.githubusercontent.com/securityMB/burp-exceptions/master/exceptions_fix.py
+# Burp Exceptions Fix magic code
+import sys, functools, inspect, traceback
+
+def decorate_function(original_function):
+    @functools.wraps(original_function)
+    def decorated_function(*args, **kwargs):
+        try:
+            return original_function(*args, **kwargs)
+        except:
+            sys.stdout.write('\n\n*** PYTHON EXCEPTION\n')
+            traceback.print_exc(file=sys.stdout)
+            raise
+    return decorated_function
+
+def FixBurpExceptionsForClass(cls):
+    for name, method in inspect.getmembers(cls, inspect.ismethod):
+        setattr(cls, name, decorate_function(method))        
+    return cls
+
+def FixBurpExceptions():
+    for name, cls in inspect.getmembers(sys.modules['__main__'], predicate=inspect.isclass):
+        FixBurpExceptionsForClass(cls)
 
 
 class BurpExtender(IBurpExtender, IContextMenuFactory):
@@ -89,7 +130,7 @@ print(response.text)'''.format(url=self.url, payload=payload, method=self.method
     def asCURL(self, event):
         headers = dict(item.split(': ') for item in self.headers[1:])
         formatted_headers = ' \\\n'.join(["--header '" + i + ": " + headers.get(i) + "'" for i in headers])
-        to_copy = "curl --location -o --request {method} '{url}' \\\n{headers} \\\n--data-raw '{payload}'".format(method=self.method, url=self.url, headers=formatted_headers, payload=self.payload)  # noqa
+        to_copy = "curl --location --request {method} '{url}' \\\n{headers} \\\n--data-raw '{payload}'".format(method=self.method, url=self.url, headers=formatted_headers, payload=self.payload)  # noqa
 
         # Copy to clipboard
         s = StringSelection(to_copy)
