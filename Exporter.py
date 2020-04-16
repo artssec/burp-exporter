@@ -130,7 +130,7 @@ print(response.text)'''.format(url=self.url, payload=payload, method=self.method
     def asCURL(self, event):
         headers = dict(item.split(': ') for item in self.headers[1:])
         formatted_headers = ' \\\n'.join(["--header '" + i + ": " + headers.get(i) + "'" for i in headers])
-        to_copy = "curl --location --request {method} '{url}' \\\n{headers} \\\n--data-raw '{payload}'".format(method=self.method, url=self.url, headers=formatted_headers, payload=self.payload)  # noqa
+        to_copy = "curl -i -s -k --location --request {method} '{url}' \\\n{headers} \\\n--data-raw '{payload}'".format(method=self.method, url=self.url, headers=formatted_headers, payload=self.payload)  # noqa
 
         # Copy to clipboard
         s = StringSelection(to_copy)
