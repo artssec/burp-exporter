@@ -44,3 +44,7 @@ Right click > Exporter to > ...
 
 ## Possible improvements
  - More snippets
+ - If you want to collaborate, use the GitHub [Feature Request](https://github.com/artssec/burp-exporter/issues/new?assignees=artssec&labels=enhancement&template=Feature_Request.md&title=).
+
+## Reporting bugs
+ - Please, use the GitHub [Bug Report](https://github.com/artssec/burp-exporter/issues/new?assignees=artssec&labels=bug&template=Bug_Report.md&title=).
