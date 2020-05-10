@@ -22,16 +22,14 @@ You can export as:
  - NodeJS Request
  - jQuery AJAX
  - PowerShell
- 
- ### Screenshot
- ![Screenshot_Exporter_01.jpg](Screenshot_Exporter_01.jpg)
 
 ## Requirements
 
  - [Jython](https://www.jython.org/download) >= 2.7.1
 
 ## Installation (Import function)
-In Burp Suite, under the `Extender/Extensions` tab, click on the `Add` button, select Extension type `Python`  and load the `Exporter` py file.
+- Download [Exporter.py](https://github.com/artssec/burp-exporter/blob/master/Exporter.py)
+- In Burp Suite, under the `Extender/Extensions` tab, click on the `Add` button, select Extension type `Python`  and load the `Exporter` py file.
 
 ## Usage
 You can copy the request from:
@@ -41,6 +39,9 @@ You can copy the request from:
  - Repeater
 
 Right click > Exporter to > ...
+
+ ### Screenshot
+ ![Screenshot_Exporter_01.jpg](Screenshot_Exporter_01.jpg)
 
 ## Possible improvements
  - More snippets
