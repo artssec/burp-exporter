@@ -108,9 +108,12 @@ class BurpExtender(IBurpExtender, IContextMenuFactory):
         self.payload = ''.join(map(chr, self._context.getSelectedMessages()[0].getRequest())).split('\r\n\r\n')[1]
 
         return menuList
+    
+    def headersDict(self):
+        return dict(item.split(': ',1) for item in self.headers[1:])
 
     def asPythonRequest(self, event):
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         payload = self.payload.replace("\n", "").replace("\t", "").replace('"', '\\"')
         to_copy = '''import requests
 
@@ -128,7 +131,7 @@ print(response.text)'''.format(url=self.url, payload=payload, method=self.method
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, s)
 
     def asCURL(self, event):
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         formatted_headers = ' \\\n'.join(["--header '" + i + ": " + headers.get(i) + "'" for i in headers])
         to_copy = "curl -i -s -k --location --request {method} '{url}' \\\n{headers} \\\n--data-raw '{payload}'".format(method=self.method, url=self.url, headers=formatted_headers, payload=self.payload)  # noqa
 
@@ -137,7 +140,7 @@ print(response.text)'''.format(url=self.url, payload=payload, method=self.method
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, s)
 
     def asWget(self, event):
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         formatted_headers = ' \\\n'.join(["--header '" + i + ": " + headers.get(i) + "'" for i in headers])
         payload = self.payload.replace('"', '\\"')
         to_copy = '''wget --no-check-certificate --quiet \\\n--method {method} --timeout=0 \\\n--body-data '{payload}' \\\n{headers} \\\n{url}'''.format(url=self.url, payload=payload, method=self.method, headers=formatted_headers)  # noqa
@@ -151,7 +154,7 @@ print(response.text)'''.format(url=self.url, payload=payload, method=self.method
             common_methods = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS']
             return 'HTTP_Request2::METHOD_' + method if method in common_methods else method
 
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         formatted_headers = ',\n'.join(["  '" + i + "' => '" + headers.get(i) + "'" for i in headers])
         payload = self.payload.replace("\n", "").replace("\t", "")
         to_copy = '''<?php
@@ -185,7 +188,7 @@ catch(HTTP_Request2_Exception $e) {{
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, s)
 
     def asGO(self, event):
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         formatted_headers = '\n  '.join(["req.Header.Add(\"" + i + "\", \"" + headers.get(i) + "\")" for i in headers])
         payload = self.payload.replace("\n", "").replace("\t", "").replace('"', '\\"')
         to_copy = '''package main
@@ -225,7 +228,7 @@ func main() {{
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, s)
 
     def asNodeJSRequest(self, event):
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         formatted_headers = '\n    '.join(["'" + i + "': '" + headers.get(i) + "'," for i in headers])
         payload = self.payload.replace("\n", "").replace("\t", "")
         to_copy = '''var request = require('request');
@@ -249,7 +252,7 @@ request(options, function (error, response) {{
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, s)
 
     def asJQueryAjax(self, event):
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         formatted_headers = '\n    '.join(["\"" + i + "\": \"" + headers.get(i) + "\"," for i in headers])
         payload = self.payload.replace("\n", "").replace("\t", "")
         to_copy = '''var settings = {{
@@ -272,7 +275,7 @@ $.ajax(settings).done(function (response) {{
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, s)
 
     def asPowerShell(self, event):
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         formatted_headers = '\n'.join(["$headers.Add('" + i + "', '" + headers.get(i) + "')" for i in headers])
         payload = self.payload.replace("\n", "").replace("\t", "") if self.payload else {}
         payload = payload.replace("\"", "`\"")
@@ -288,7 +291,7 @@ $response | ConvertTo-Json
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(s, s)
 
     def asPerl(self, event):
-        headers = dict(item.split(': ') for item in self.headers[1:])
+        headers = self.headersDict()
         cookies = headers.get('Cookie')
         if cookies:
             cookies = cookies.split('; ')
