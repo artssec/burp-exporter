@@ -72,7 +72,7 @@ class BurpExtender(IBurpExtender, IContextMenuFactory):
         menuList = ArrayList()
 
         invocation_allowed = [invocation.CONTEXT_MESSAGE_EDITOR_REQUEST, invocation.CONTEXT_PROXY_HISTORY,
-                              invocation.CONTEXT_TARGET_SITE_MAP_TABLE]
+                              invocation.CONTEXT_TARGET_SITE_MAP_TABLE, invocation.CONTEXT_MESSAGE_VIEWER_REQUEST]
         if self._context.getInvocationContext() in invocation_allowed and len(self._context.selectedMessages) == 1:
             parentMenu = JMenu('Exporter to')
 
