@@ -53,7 +53,7 @@ You can copy the request from:
  
  ![Screenshot_Exporter_02.jpg](Screenshot_Exporter_02.jpg)
 
-## Changelog v1.0
+## Changelog v1.0 (Oct 11, 2021)
 - Bugs fixed: Syntax errors.
 - Improvements:
   - Added support for HTML Forms, Ruby Net::HTTP, JavaScript XHR.
