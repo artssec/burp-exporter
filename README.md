@@ -34,7 +34,7 @@ You can export as:
 - In Burp Suite, under the `Extender > Extensions` tab, click on the `Add` button, select Extension type `Python`  and load the `Exporter` py file.
 
 ## Usage
-You can copy the request from:
+You can export the HTTP Request from:
 - Target > Tree and Site map
 - Proxy > Intercept
 - Proxy > HTTP history
